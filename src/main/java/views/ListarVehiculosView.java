@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+
 public class ListarVehiculosView extends javax.swing.JFrame {
 
     /**
@@ -18,9 +19,14 @@ public class ListarVehiculosView extends javax.swing.JFrame {
     }
     private void listarVehiculos(){
         ArrayList<VehiculoViewModel> vehiculos = Controlador.getVehiculos();
-        vehiculosGrid.setModel(new DefaultTableModel(new Object[][] {}, 
-            new String[] { "Patente","Vehículo", "Tipo", "Sucursal", "Cap.Carga", "Km/litro", "Año", "Litros extra", "Km a recorrer" }));
-        
+        vehiculosGrid.setModel(new DefaultTableModel(new Object[][]{}, 
+            new String[] { "Patente","Vehículo", "Tipo", "Sucursal", "Cap.Carga", "Km/litro", "Año", "Litros extra", "Km a recorrer" }){
+        @Override
+        public boolean isCellEditable(int row, int column){
+        return column == 8;
+                
+                }
+    });
         for(VehiculoViewModel vehiculo : vehiculos){
             ((DefaultTableModel)vehiculosGrid.getModel()).addRow(new Object[] {
                 vehiculo.getPatente(),
@@ -161,8 +167,8 @@ public class ListarVehiculosView extends javax.swing.JFrame {
              lista.put((String)table.getValueAt(i, 0), (Double)table.getValueAt(i, 8));
          }
          double[] consumos = Controlador.calcularConsumos(lista);
-         totalConsumoElectricosValue.setText(String.format("%.2f%n kWh", consumos[0]));
-         totalConsumoCombustibleValue.setText(String.format("%.2f%n litros", consumos[1]));
+         totalConsumoElectricosValue.setText(String.format("%.2f kWh", consumos[0]));
+         totalConsumoCombustibleValue.setText(String.format("%.2f litros", consumos[1]));
     }//GEN-LAST:event_calcularConsumosActionPerformed
 
     /**
